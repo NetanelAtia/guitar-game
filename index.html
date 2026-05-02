@@ -431,7 +431,7 @@
 
     .chord-picker {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 7px;
       direction: ltr;
       margin-bottom: 10px;
@@ -451,6 +451,14 @@
       background: linear-gradient(135deg, #0284c7, #7c3aed);
       border-color: rgba(125, 211, 252, 0.42);
       box-shadow: 0 10px 22px rgba(56, 189, 248, 0.16);
+    }
+
+
+    .chord-picker button.free-mode,
+    .chord-picker button:first-child.active {
+      background: linear-gradient(135deg, #475569, #0f172a);
+      border-color: rgba(226, 232, 240, 0.34);
+      color: #e2e8f0;
     }
 
     .active-task-title {
@@ -960,6 +968,14 @@
       box-shadow: 0 10px 22px rgba(56, 189, 248, 0.16);
     }
 
+
+    .chord-picker button.free-mode,
+    .chord-picker button:first-child.active {
+      background: linear-gradient(135deg, #475569, #0f172a);
+      border-color: rgba(226, 232, 240, 0.34);
+      color: #e2e8f0;
+    }
+
     .active-task-title {
       margin-top: 4px;
     }
@@ -1062,6 +1078,14 @@
       background: linear-gradient(135deg, #0284c7, #7c3aed);
       border-color: rgba(125, 211, 252, 0.42);
       box-shadow: 0 10px 22px rgba(56, 189, 248, 0.16);
+    }
+
+
+    .chord-picker button.free-mode,
+    .chord-picker button:first-child.active {
+      background: linear-gradient(135deg, #475569, #0f172a);
+      border-color: rgba(226, 232, 240, 0.34);
+      color: #e2e8f0;
     }
 
     .active-task-title {
@@ -1426,7 +1450,7 @@
       בשונה מהגרסאות הקודמות, המשחק הזה לא משתמש באקורדים כלליים שהמצאנו,
       אלא ממפה את תווי ה־MIDI של הגיטרה למיתרים ושריגים. כשהבועה יורדת,
       היא מראה איזה מיתרים ושריגים פעילים. במצב התחל שיר הבועה נעצרת על הקו עד שתפרוט נכון, ואז השיר ממשיך. אתה יכול לפרוט מיתר אחד, או להחליק על כמה מיתרים ברצף.
-      במובייל חילקתי את האזור לשניים: במובייל: אזור הפריטה מקבל 70% מהרוחב, ובחירת האקורדים בצד ימין מקבלת 30%. אם אתה רוצה אחר כך, אפשר לבנות גם גרסה עם עוד קבצי MIDI באותו סגנון.
+      במובייל חילקתי את האזור לשניים: במובייל: אזור הפריטה מקבל 70% מהרוחב, ובחירת האקורדים בצד ימין מקבלת 30%. לחיצה נוספת על אותו אקורד מבטלת אותו ומחזירה למצב ריק / ניגון חופשי. אם אתה רוצה אחר כך, אפשר לבנות גם גרסה עם עוד קבצי MIDI באותו סגנון.
     </section>
   </main>
 
@@ -1759,17 +1783,40 @@ function getCurrentTargetEvent(elapsed) {
     function renderChordPicker() {
       if (!chordPicker) return;
       chordPicker.innerHTML = "";
+
+      const freeBtn = document.createElement("button");
+      freeBtn.type = "button";
+      freeBtn.textContent = "FREE";
+      freeBtn.className = selectedChord ? "" : "active free-mode";
+      freeBtn.title = "מצב ריק — ניגון חופשי על מיתרים פתוחים";
+      freeBtn.addEventListener("pointerdown", e => {
+        e.preventDefault();
+        selectedChord = null;
+        renderChordPicker();
+        updateCurrentEventView(waitingEvent || null);
+        toast("מצב ריק — ניגון חופשי");
+      });
+      chordPicker.appendChild(freeBtn);
+
       CHORDS.forEach(chord => {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.textContent = chord.key;
-        btn.className = chord.key === selectedChord.key ? "active" : "";
+        btn.className = selectedChord && chord.key === selectedChord.key ? "active" : "";
         btn.addEventListener("pointerdown", e => {
           e.preventDefault();
-          selectedChord = chord;
+
+          // לחיצה שנייה על אותו אקורד מבטלת אותו ועוברת לניגון חופשי.
+          if (selectedChord && selectedChord.key === chord.key) {
+            selectedChord = null;
+            toast("האקורד בוטל — מצב ריק");
+          } else {
+            selectedChord = chord;
+            toast(`בחרת אקורד ${chord.key}`);
+          }
+
           renderChordPicker();
           updateCurrentEventView(waitingEvent || null);
-          toast(`בחרת אקורד ${chord.key}`);
         });
         chordPicker.appendChild(btn);
       });
@@ -1817,7 +1864,20 @@ function renderMobileChordPanel(ev) {
 
 
     function drawChordShape(chord) {
-      if (!chord) return;
+      if (!chord) {
+        STRINGS.forEach(s => {
+          const row = strumPanel.querySelector(`[data-string-id="${s.id}"]`);
+          const badge = row?.querySelector("[data-fret-text]");
+          if (badge) badge.textContent = "Open";
+
+          const o = document.createElement("div");
+          o.className = "open-label";
+          o.style.top = s.y + "%";
+          o.textContent = "○";
+          fretboard.appendChild(o);
+        });
+        return;
+      }
       STRINGS.forEach(s => {
         const fret = chord.frets[s.id];
         const row = strumPanel.querySelector(`[data-string-id="${s.id}"]`);
@@ -1860,7 +1920,7 @@ function updateCurrentEventView(ev) {
       });
 
       if (!ev) {
-        eventLabel.textContent = midiLoaded ? `אקורד נבחר: ${selectedChord.key}` : "טוען MIDI…";
+        eventLabel.textContent = midiLoaded ? (selectedChord ? `אקורד נבחר: ${selectedChord.key}` : "מצב ריק — ניגון חופשי") : "טוען MIDI…";
         drawChordShape(selectedChord);
         return;
       }
@@ -1989,10 +2049,12 @@ function updateCurrentEventView(ev) {
           }
         }
       } else {
-        // אם אין תו MIDI פעיל על המיתר הזה — מנגנים לפי האקורד שבחרת בצד שמאל.
-        const chordFret = selectedChord.frets[stringId];
+        // אם אין תו MIDI פעיל על המיתר הזה:
+        // עם אקורד נבחר — מנגנים לפי האקורד.
+        // בלי אקורד — מצב ריק / ניגון חופשי על מיתרים פתוחים.
+        const openStr = STR_BY_ID.get(stringId);
+        const chordFret = selectedChord ? selectedChord.frets[stringId] : 0;
         if (chordFret >= 0) {
-          const openStr = STR_BY_ID.get(stringId);
           const freq = openStr.freq * Math.pow(2, chordFret / 12);
           playFrequency(freq, 1.9, 0.7);
         }
