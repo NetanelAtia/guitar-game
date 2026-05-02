@@ -88,7 +88,7 @@
       font-size: clamp(28px, 4vw, 48px);
       letter-spacing: -1px;
       line-height: 1.05;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
     .hero p {
@@ -118,7 +118,7 @@
 
     .stat span {
       color: var(--muted);
-      font-size: 13px;
+      font-size: 11px;
       margin-bottom: 5px;
     }
 
@@ -201,7 +201,7 @@
       width: 100%;
       text-align: center;
       border-radius: 16px;
-      padding: 12px 14px;
+      padding: 5px 7px;
       background: linear-gradient(135deg, rgba(2,132,199,.2), rgba(124,58,237,.18));
       border: 1px solid rgba(125,211,252,.26);
       color: #e0f2fe;
@@ -211,6 +211,7 @@
 
     .stage {
       position: relative;
+      transform: translateZ(0);
       height: 360px;
       overflow: hidden;
       margin-bottom: 12px;
@@ -255,24 +256,73 @@
 
     .bubble {
       position: absolute;
+      will-change: transform;
+      contain: layout paint;
       left: 50%;
       top: -90px;
       transform: translateX(-50%);
-      min-width: min(700px, calc(100% - 24px));
+      min-width: min(430px, calc(100% - 24px));
       max-width: calc(100% - 24px);
-      min-height: 68px;
+      min-height: 46px;
       padding: 12px 14px;
-      border-radius: 22px;
+      border-radius: 16px;
       background: linear-gradient(135deg, rgba(56,189,248,.96), rgba(167,139,250,.94));
-      box-shadow: 0 16px 32px rgba(56,189,248,.30);
+      box-shadow: 0 10px 22px rgba(56,189,248,.22);
       border: 1px solid rgba(255,255,255,.20);
       z-index: 4;
       pointer-events: none;
     }
 
+
+    .bubble {
+      min-width: 0 !important;
+      width: auto !important;
+      max-width: calc(100% - 18px) !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+    }
+
+    .bubble-header {
+      display: none !important;
+    }
+
+    .bubble .targets {
+      max-height: none !important;
+      overflow: visible !important;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .bubble .tag {
+      min-width: 42px !important;
+      padding: 5px 8px !important;
+      border-radius: 999px !important;
+      background: linear-gradient(135deg, #38bdf8, #a78bfa) !important;
+      border: 1px solid rgba(255,255,255,.28) !important;
+      box-shadow: 0 8px 16px rgba(56,189,248,.20) !important;
+      font-size: 11px !important;
+      line-height: 1.1;
+    }
+
+    .bubble.demo .tag {
+      background: linear-gradient(135deg, #f59e0b, #ec4899) !important;
+    }
+
+    .bubble.hit .tag {
+      background: linear-gradient(135deg, #10b981, #34d399) !important;
+    }
+
+    .bubble.miss .tag {
+      background: linear-gradient(135deg, #dc2626, #fb7185) !important;
+    }
+
     .bubble.demo {
       background: linear-gradient(135deg, rgba(245,158,11,.96), rgba(236,72,153,.94));
-      box-shadow: 0 16px 32px rgba(245,158,11,.28);
+      box-shadow: 0 10px 22px rgba(245,158,11,.22);
     }
 
     .bubble.hit {
@@ -287,6 +337,7 @@
 
     .bubble-header {
       display: flex;
+      font-size: 12px;
       justify-content: space-between;
       gap: 10px;
       align-items: center;
@@ -311,13 +362,15 @@
 
     .targets {
       display: flex;
+      max-height: 24px;
+      overflow: hidden;
       flex-wrap: wrap;
       gap: 8px;
       direction: ltr;
     }
 
     .tag {
-      min-width: 70px;
+      min-width: 46px;
       padding: 8px 10px;
       border-radius: 999px;
       background: rgba(2,6,23,.24);
@@ -354,6 +407,89 @@
       margin-bottom: 12px;
       align-items: center;
       flex-wrap: wrap;
+    }
+
+
+    .mobile-chord-panel {
+      margin: 0 0 14px;
+      padding: 12px;
+      border-radius: 20px;
+      background: rgba(2, 6, 23, 0.34);
+      border: 1px solid rgba(125, 211, 252, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .mobile-chord-title {
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 9px;
+    }
+
+
+    .chord-picker {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+      direction: ltr;
+      margin-bottom: 10px;
+    }
+
+    .chord-picker button {
+      min-height: 44px;
+      border-radius: 14px;
+      padding: 8px 6px;
+      background: rgba(148, 163, 184, 0.12);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      color: #fff;
+      font-weight: 950;
+    }
+
+    .chord-picker button.active {
+      background: linear-gradient(135deg, #0284c7, #7c3aed);
+      border-color: rgba(125, 211, 252, 0.42);
+      box-shadow: 0 10px 22px rgba(56, 189, 248, 0.16);
+    }
+
+    .active-task-title {
+      margin-top: 4px;
+    }
+
+    .mobile-chord-actions {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+      direction: ltr;
+    }
+
+    .mobile-chord-actions button {
+      min-height: 48px;
+      border-radius: 14px;
+      padding: 8px 10px;
+      line-height: 1.15;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(148, 163, 184, 0.12);
+      color: #f8fafc;
+      font-weight: 950;
+    }
+
+    .mobile-chord-actions button.target-pad {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.70), rgba(124, 58, 237, 0.62));
+      border-color: rgba(125, 211, 252, 0.36);
+      box-shadow: 0 10px 22px rgba(56, 189, 248, 0.14);
+    }
+
+    .mobile-chord-actions button.strum-current {
+      grid-column: span 2;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      border-color: rgba(187, 247, 208, 0.45);
+      color: #fff;
+    }
+
+    .mobile-chord-actions button.mobile-empty {
+      grid-column: 1 / -1;
+      color: #94a3b8;
+      background: rgba(15, 23, 42, 0.54);
     }
 
     .guitar-body {
@@ -747,14 +883,15 @@
       }
 
       .bubble {
-        min-height: 48px;
-        padding: 8px 9px;
-        border-radius: 16px;
+        min-width: min(310px, calc(100% - 18px));
+        min-height: 38px;
+        padding: 6px 8px;
+        border-radius: 14px;
       }
 
       .bubble-header {
-        margin-bottom: 5px;
-        font-size: 12px;
+        margin-bottom: 3px;
+        font-size: 10px;
       }
 
       .targets {
@@ -778,7 +915,178 @@
         margin-bottom: 5px;
       }
 
+      .mobile-chord-panel {
+        margin: 0;
+        padding: 6px;
+        border-radius: 12px;
+        min-height: 42vh;
+        max-height: 290px;
+        overflow: auto;
+      }
+
+      .mobile-chord-title {
+        display: block;
+        font-size: 10px;
+        margin-bottom: 5px;
+        color: #e0f2fe;
+      }
+
+  
+    .chord-picker {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+      direction: ltr;
+      margin-bottom: 10px;
+    }
+
+    .chord-picker button {
+      min-height: 44px;
+      border-radius: 14px;
+      padding: 8px 6px;
+      background: rgba(148, 163, 184, 0.12);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      color: #fff;
+      font-weight: 950;
+    }
+
+    .chord-picker button.active {
+      background: linear-gradient(135deg, #0284c7, #7c3aed);
+      border-color: rgba(125, 211, 252, 0.42);
+      box-shadow: 0 10px 22px rgba(56, 189, 248, 0.16);
+    }
+
+    .active-task-title {
+      margin-top: 4px;
+    }
+
+    .mobile-chord-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px;
+      }
+
+      .mobile-chord-actions button {
+        min-height: 42px;
+        padding: 6px 6px;
+        font-size: 10px;
+        border-radius: 10px;
+      }
+
+      .mobile-chord-actions button.strum-current {
+        grid-column: 1 / -1;
+        min-height: 38px;
+      }
+
+      .guitar-shell {
+        display: grid;
+        grid-template-columns: 0.52fr 1.48fr;
+        grid-template-areas:
+          "title title"
+          "press play";
+        gap: 5px;
+      }
+
+      .guitar-title {
+        grid-area: title;
+      }
+
+      .mobile-chord-panel {
+        grid-area: press;
+      }
+
       .guitar-body {
+        grid-area: play;
+      }
+
+      .fretboard {
+        display: none;
+      }
+
+
+  
+    .mobile-chord-panel {
+      margin: 0 0 14px;
+      padding: 12px;
+      border-radius: 20px;
+      background: rgba(2, 6, 23, 0.34);
+      border: 1px solid rgba(125, 211, 252, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .mobile-chord-title {
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 9px;
+    }
+
+
+    .chord-picker {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+      direction: ltr;
+      margin-bottom: 10px;
+    }
+
+    .chord-picker button {
+      min-height: 44px;
+      border-radius: 14px;
+      padding: 8px 6px;
+      background: rgba(148, 163, 184, 0.12);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      color: #fff;
+      font-weight: 950;
+    }
+
+    .chord-picker button.active {
+      background: linear-gradient(135deg, #0284c7, #7c3aed);
+      border-color: rgba(125, 211, 252, 0.42);
+      box-shadow: 0 10px 22px rgba(56, 189, 248, 0.16);
+    }
+
+    .active-task-title {
+      margin-top: 4px;
+    }
+
+    .mobile-chord-actions {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+      direction: ltr;
+    }
+
+    .mobile-chord-actions button {
+      min-height: 48px;
+      border-radius: 14px;
+      padding: 8px 10px;
+      line-height: 1.15;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(148, 163, 184, 0.12);
+      color: #f8fafc;
+      font-weight: 950;
+    }
+
+    .mobile-chord-actions button.target-pad {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.70), rgba(124, 58, 237, 0.62));
+      border-color: rgba(125, 211, 252, 0.36);
+      box-shadow: 0 10px 22px rgba(56, 189, 248, 0.14);
+    }
+
+    .mobile-chord-actions button.strum-current {
+      grid-column: span 2;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      border-color: rgba(187, 247, 208, 0.45);
+      color: #fff;
+    }
+
+    .mobile-chord-actions button.mobile-empty {
+      grid-column: 1 / -1;
+      color: #94a3b8;
+      background: rgba(15, 23, 42, 0.54);
+    }
+
+    .guitar-body {
         grid-template-columns: .78fr 1.22fr;
         gap: 5px;
       }
@@ -908,8 +1216,17 @@
 
     <section class="guitar-shell">
       <div class="guitar-title">
-        <span>אזור פריטה ריאליסטי: אפשר לגרור ברצף על כל המיתרים כמו פריטה אמיתית</span>
+        <span>במובייל: צד שמאל בוחר אקורד · צד ימין פורט מיתרים</span>
         <span id="eventLabel">ממתין לטעינת MIDI…</span>
+      </div>
+
+      <div class="mobile-chord-panel" id="mobileChordPanel">
+        <div class="mobile-chord-title">צד לחיצה — בחר אקורד</div>
+        <div class="chord-picker" id="chordPicker"></div>
+        <div class="mobile-chord-title active-task-title">המשימה מהבועה</div>
+        <div class="mobile-chord-actions" id="mobileChordActions">
+          <button type="button" class="mobile-empty">כשהבועה תגיע לקו — יופיעו כאן המיתרים שצריך לפרוט</button>
+        </div>
       </div>
 
       <div class="guitar-body">
@@ -930,7 +1247,7 @@
       בשונה מהגרסאות הקודמות, המשחק הזה לא משתמש באקורדים כלליים שהמצאנו,
       אלא ממפה את תווי ה־MIDI של הגיטרה למיתרים ושריגים. כשהבועה יורדת,
       היא מראה איזה מיתרים ושריגים פעילים. במצב התחל שיר הבועה נעצרת על הקו עד שתפרוט נכון, ואז השיר ממשיך. אתה יכול לפרוט מיתר אחד, או להחליק על כמה מיתרים ברצף.
-      אם אתה רוצה אחר כך, אפשר לבנות גם גרסה עם עוד קבצי MIDI באותו סגנון.
+      במובייל חילקתי את האזור לשניים: צד שמאל לבחירת אקורד, וצד ימין לפריטה על המיתרים. אם אתה רוצה אחר כך, אפשר לבנות גם גרסה עם עוד קבצי MIDI באותו סגנון.
     </section>
   </main>
 
@@ -955,6 +1272,9 @@
     const songNameEl = document.getElementById("songName");
     const trackNameEl = document.getElementById("trackName");
     const eventLabel = document.getElementById("eventLabel");
+    const mobileChordPanel = document.getElementById("mobileChordPanel");
+    const mobileChordActions = document.getElementById("mobileChordActions");
+    const chordPicker = document.getElementById("chordPicker");
 
     const STRINGS = [
       // top to bottom visually: thick/low -> thin/high, like looking at a real guitar from the front.
@@ -966,6 +1286,19 @@
       { id: 5, name: "e", baseMidi: 64, freq: 329.63, role: "דק / גבוה", thick: "2px", y: 88 }
     ];
     const STR_BY_ID = new Map(STRINGS.map(s => [s.id, s]));
+
+    const CHORDS = [
+      { key: "C",  frets: [-1,3,2,0,1,0] },
+      { key: "G",  frets: [3,2,0,0,0,3] },
+      { key: "D",  frets: [-1,-1,0,2,3,2] },
+      { key: "Em", frets: [0,2,2,0,0,0] },
+      { key: "Am", frets: [-1,0,2,2,1,0] },
+      { key: "F",  frets: [1,3,3,2,1,1] },
+      { key: "E",  frets: [0,2,2,1,0,0] },
+      { key: "Dm", frets: [-1,-1,0,2,3,1] }
+    ];
+
+    let selectedChord = CHORDS[0];
 
     let audioCtx = null;
     let masterGain = null;
@@ -1146,16 +1479,7 @@
         const bubble = document.createElement("div");
         bubble.className = "bubble";
         const targetHtml = ev.targets.map(t => `<span class="tag" data-string="${t.stringId}">${STR_BY_ID.get(t.stringId).name} • ${t.fret}</span>`).join("");
-        bubble.innerHTML = `
-          <div class="bubble-header">
-            <div class="bubble-title">
-              <span>🎸 Event</span>
-              <small>#${ev.id + 1}</small>
-            </div>
-            <small>${ev.targets.length > 1 ? "פרוט על כמה מיתרים" : "פרוט על מיתר אחד"}</small>
-          </div>
-          <div class="targets">${targetHtml}</div>
-        `;
+        bubble.innerHTML = `<div class="targets">${targetHtml}</div>`;
         stage.appendChild(bubble);
         ev.bubble = bubble;
       });
@@ -1251,7 +1575,103 @@ function getCurrentTargetEvent(elapsed) {
       return null;
     }
 
-    function updateCurrentEventView(ev) {
+    
+    
+    function renderChordPicker() {
+      if (!chordPicker) return;
+      chordPicker.innerHTML = "";
+      CHORDS.forEach(chord => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = chord.key;
+        btn.className = chord.key === selectedChord.key ? "active" : "";
+        btn.addEventListener("pointerdown", e => {
+          e.preventDefault();
+          selectedChord = chord;
+          renderChordPicker();
+          updateCurrentEventView(waitingEvent || null);
+          toast(`בחרת אקורד ${chord.key}`);
+        });
+        chordPicker.appendChild(btn);
+      });
+    }
+
+function renderMobileChordPanel(ev) {
+      if (!mobileChordActions) return;
+      mobileChordActions.innerHTML = "";
+
+      if (!ev) {
+        const empty = document.createElement("button");
+        empty.type = "button";
+        empty.className = "mobile-empty";
+        empty.textContent = "בחר אקורד למעלה ואז פרוט בצד ימין";
+        mobileChordActions.appendChild(empty);
+        return;
+      }
+
+      const strumAll = document.createElement("button");
+      strumAll.type = "button";
+      strumAll.className = "strum-current";
+      strumAll.textContent = ev.targets.length > 1 ? "נגן הכל" : "פרוט";
+      strumAll.addEventListener("pointerdown", e => {
+        e.preventDefault();
+        const ordered = [...ev.targets].sort((a, b) => a.stringId - b.stringId);
+        ordered.forEach((t, i) => {
+          setTimeout(() => handleStrumOnString(t.stringId), i * 42);
+        });
+      });
+      mobileChordActions.appendChild(strumAll);
+
+      ev.targets.forEach(t => {
+        const s = STR_BY_ID.get(t.stringId);
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "target-pad";
+        btn.innerHTML = `${s.name}<br>Fret ${t.fret}`;
+        btn.addEventListener("pointerdown", e => {
+          e.preventDefault();
+          handleStrumOnString(t.stringId);
+        });
+        mobileChordActions.appendChild(btn);
+      });
+    }
+
+
+    function drawChordShape(chord) {
+      if (!chord) return;
+      STRINGS.forEach(s => {
+        const fret = chord.frets[s.id];
+        const row = strumPanel.querySelector(`[data-string-id="${s.id}"]`);
+        const badge = row?.querySelector("[data-fret-text]");
+        if (badge) badge.textContent = fret < 0 ? "Mute" : (fret === 0 ? "Open" : `Fret ${fret}`);
+
+        if (fret > 0) {
+          const finger = document.createElement("div");
+          finger.className = "finger";
+          const xPos = 8 + ((Math.min(fret, 5) - 0.5) / 5) * 88;
+          finger.style.left = `${xPos}%`;
+          finger.style.top = `${s.y}%`;
+          finger.textContent = String(fret);
+          fretboard.appendChild(finger);
+        } else if (fret === 0) {
+          const o = document.createElement("div");
+          o.className = "open-label";
+          o.style.top = s.y + "%";
+          o.textContent = "○";
+          fretboard.appendChild(o);
+        } else {
+          const x = document.createElement("div");
+          x.className = "mute-label";
+          x.style.top = s.y + "%";
+          x.textContent = "×";
+          fretboard.appendChild(x);
+        }
+      });
+    }
+
+function updateCurrentEventView(ev) {
+      renderChordPicker();
+      renderMobileChordPanel(ev);
       buildFretboardBase();
 
       document.querySelectorAll(".strum-string").forEach(row => {
@@ -1261,7 +1681,8 @@ function getCurrentTargetEvent(elapsed) {
       });
 
       if (!ev) {
-        eventLabel.textContent = midiLoaded ? "מוכן לפריטה" : "טוען MIDI…";
+        eventLabel.textContent = midiLoaded ? `אקורד נבחר: ${selectedChord.key}` : "טוען MIDI…";
+        drawChordShape(selectedChord);
         return;
       }
 
@@ -1389,9 +1810,13 @@ function getCurrentTargetEvent(elapsed) {
           }
         }
       } else {
-        // non-target pluck still plays open string for realism
-        const openStr = STR_BY_ID.get(stringId);
-        playFrequency(openStr.freq, 1.9, 0.7);
+        // אם אין תו MIDI פעיל על המיתר הזה — מנגנים לפי האקורד שבחרת בצד שמאל.
+        const chordFret = selectedChord.frets[stringId];
+        if (chordFret >= 0) {
+          const openStr = STR_BY_ID.get(stringId);
+          const freq = openStr.freq * Math.pow(2, chordFret / 12);
+          playFrequency(freq, 1.9, 0.7);
+        }
         animateString(stringId);
       }
     }
@@ -1479,7 +1904,7 @@ function getCurrentTargetEvent(elapsed) {
           waitStartReal = now;
           progress = 1;
           updateCurrentEventView(ev);
-          toast(ev.targets.length > 1 ? "פרוט את המיתרים המסומנים" : "פרוט את המיתר המסומן");
+          toast(ev.targets.length > 1 ? "הבועה על הקו — פרוט את המיתרים" : "הבועה על הקו — פרוט את המיתר");
         }
 
         // אם אנחנו מחכים לאירוע מסוים, הוא נשאר בדיוק על הקו.
@@ -1488,8 +1913,11 @@ function getCurrentTargetEvent(elapsed) {
           activeViewEvent = ev;
         }
 
-        const y = progress * hitY - 90;
-        if (ev.bubble) ev.bubble.style.transform = `translateX(-50%) translateY(${y}px)`;
+        const bubbleHeight = window.innerWidth <= 950 ? 26 : 30;
+        const bubbleStartTop = -90;
+        const finalY = hitY - bubbleHeight - bubbleStartTop;
+        const y = progress * finalY;
+        if (ev.bubble) ev.bubble.style.transform = `translate3d(-50%, ${y}px, 0)`;
 
         const diff = elapsed - ev.due;
         if (!activeViewEvent && diff >= -600) activeViewEvent = ev;
@@ -1534,6 +1962,7 @@ function getCurrentTargetEvent(elapsed) {
     async function init() {
       buildFretboardBase();
       buildStrumPanel();
+      renderChordPicker();
       try {
         loadMidiFromEmbedded();
         toast("Nothing Else Matters נטען בהצלחה");
