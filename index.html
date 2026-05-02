@@ -38,6 +38,7 @@
       min-height: 100%;
       overscroll-behavior: none;
       touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
       background:
         radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.22), transparent 34%),
         radial-gradient(circle at 90% 90%, rgba(167, 139, 250, 0.24), transparent 36%),
@@ -148,6 +149,7 @@
 
     button, input[type="range"] {
       width: 100%;
+      touch-action: manipulation;
     }
 
     button {
@@ -588,6 +590,8 @@
 
     .strum-panel {
       min-height: 290px;
+      -webkit-user-select: none;
+      user-select: none;
       border-radius: 24px;
       padding: 18px 16px;
       background:
@@ -978,24 +982,39 @@
       }
 
       .guitar-shell {
-        display: grid;
-        grid-template-columns: 0.52fr 1.48fr;
-        grid-template-areas:
-          "title title"
-          "press play";
-        gap: 5px;
+        display: block;
+        width: 100%;
+        padding: 6px;
       }
 
       .guitar-title {
-        grid-area: title;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .guitar-title span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .mobile-chord-panel {
-        grid-area: press;
+        width: 100%;
+        min-height: 0;
+        max-height: none;
+        margin: 0 0 6px;
+        padding: 8px;
+        border-radius: 14px;
+        overflow: visible;
+        background: linear-gradient(135deg, rgba(2, 132, 199, 0.14), rgba(124, 58, 237, 0.12)), rgba(2, 6, 23, 0.40);
       }
 
       .guitar-body {
-        grid-area: play;
+        width: 100%;
+        display: block;
       }
 
       .fretboard {
@@ -1145,6 +1164,91 @@
       }
     }
 
+
+    @media (max-width: 950px) and (orientation: landscape) {
+      .stage {
+        height: 24vh;
+        min-height: 126px;
+        max-height: 165px;
+      }
+
+      .mobile-chord-title {
+        display: block;
+        font-size: 11px;
+        margin-bottom: 6px;
+        color: #e0f2fe;
+        font-weight: 950;
+      }
+
+      .chord-picker {
+        grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        margin-bottom: 8px !important;
+      }
+
+      .chord-picker button {
+        min-height: 42px !important;
+        font-size: 12px !important;
+        padding: 6px 5px !important;
+        border-radius: 12px !important;
+      }
+
+      .mobile-chord-actions {
+        grid-template-columns: 1.2fr repeat(6, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+      }
+
+      .mobile-chord-actions button {
+        min-height: 40px !important;
+        padding: 6px 6px !important;
+        font-size: 10px !important;
+        border-radius: 12px !important;
+      }
+
+      .mobile-chord-actions button.strum-current {
+        grid-column: span 1 !important;
+        min-height: 40px !important;
+      }
+
+      .strum-panel {
+        width: 100% !important;
+        min-height: 40vh !important;
+        max-height: none !important;
+        padding: 10px 12px !important;
+        gap: 7px !important;
+        border-radius: 20px !important;
+      }
+
+      .strum-panel::before {
+        width: 118px !important;
+        height: 118px !important;
+        right: 50% !important;
+        transform: translate(50%, -50%) !important;
+        border-width: 7px !important;
+        opacity: .50 !important;
+      }
+
+      .strum-string {
+        min-height: 40px !important;
+        grid-template-columns: 42px 1fr 62px 64px !important;
+        padding: 0 10px !important;
+      }
+
+      .strum-string .string-name {
+        font-size: 15px !important;
+      }
+
+      .strum-string .string-role {
+        font-size: 9px !important;
+      }
+
+      .strum-string .fret-badge {
+        min-height: 24px !important;
+        font-size: 10px !important;
+        padding: 0 7px !important;
+      }
+    }
+
     @media (max-width: 620px) {
       body { padding: 8px; }
       .app { padding: 10px; border-radius: 20px; }
@@ -1216,7 +1320,7 @@
 
     <section class="guitar-shell">
       <div class="guitar-title">
-        <span>במובייל: צד שמאל בוחר אקורד · צד ימין פורט מיתרים</span>
+        <span>במובייל: אקורדים לרוחב מלא · פריטה לרוחב מלא</span>
         <span id="eventLabel">ממתין לטעינת MIDI…</span>
       </div>
 
@@ -1247,7 +1351,7 @@
       בשונה מהגרסאות הקודמות, המשחק הזה לא משתמש באקורדים כלליים שהמצאנו,
       אלא ממפה את תווי ה־MIDI של הגיטרה למיתרים ושריגים. כשהבועה יורדת,
       היא מראה איזה מיתרים ושריגים פעילים. במצב התחל שיר הבועה נעצרת על הקו עד שתפרוט נכון, ואז השיר ממשיך. אתה יכול לפרוט מיתר אחד, או להחליק על כמה מיתרים ברצף.
-      במובייל חילקתי את האזור לשניים: צד שמאל לבחירת אקורד, וצד ימין לפריטה על המיתרים. אם אתה רוצה אחר כך, אפשר לבנות גם גרסה עם עוד קבצי MIDI באותו סגנון.
+      במובייל חילקתי את האזור לשניים: בחירת האקורדים ואזור הפריטה פתוחים לרוחב מלא במובייל. אם אתה רוצה אחר כך, אפשר לבנות גם גרסה עם עוד קבצי MIDI באותו סגנון.
     </section>
   </main>
 
@@ -1959,7 +2063,39 @@ function updateCurrentEventView(ev) {
       rafId = requestAnimationFrame(loop);
     }
 
+
+    function installMobileGuards() {
+      let lastTouchEnd = 0;
+
+      document.addEventListener("dblclick", e => {
+        e.preventDefault();
+      }, { passive: false });
+
+      document.addEventListener("gesturestart", e => {
+        e.preventDefault();
+      }, { passive: false });
+
+      document.addEventListener("gesturechange", e => {
+        e.preventDefault();
+      }, { passive: false });
+
+      document.addEventListener("touchend", e => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 320) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, { passive: false });
+
+      document.addEventListener("contextmenu", e => {
+        if (e.target.closest(".strum-panel, .mobile-chord-panel, button")) {
+          e.preventDefault();
+        }
+      });
+    }
+
     async function init() {
+      installMobileGuards();
       buildFretboardBase();
       buildStrumPanel();
       renderChordPicker();
