@@ -1249,6 +1249,81 @@
       }
     }
 
+
+    @media (max-width: 950px) and (orientation: landscape) {
+      .guitar-shell {
+        display: grid !important;
+        grid-template-columns: 70% 30% !important;
+        grid-template-areas:
+          "title title"
+          "play press" !important;
+        gap: 6px !important;
+        align-items: stretch !important;
+      }
+
+      .guitar-title {
+        grid-area: title !important;
+      }
+
+      .mobile-chord-panel {
+        grid-area: press !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 40vh !important;
+        max-height: none !important;
+        margin: 0 !important;
+        padding: 7px !important;
+        overflow: auto !important;
+        border-radius: 16px !important;
+      }
+
+      .guitar-body {
+        grid-area: play !important;
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important;
+      }
+
+      .strum-panel {
+        width: 100% !important;
+        min-height: 40vh !important;
+        height: 100% !important;
+        max-height: none !important;
+      }
+
+      .chord-picker {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        margin-bottom: 7px !important;
+      }
+
+      .chord-picker button {
+        min-height: 39px !important;
+        font-size: 11px !important;
+        padding: 6px 5px !important;
+      }
+
+      .mobile-chord-actions {
+        grid-template-columns: 1fr !important;
+        gap: 5px !important;
+      }
+
+      .mobile-chord-actions button {
+        min-height: 34px !important;
+        font-size: 9px !important;
+        padding: 5px !important;
+      }
+
+      .mobile-chord-actions button.strum-current {
+        grid-column: 1 / -1 !important;
+      }
+
+      .mobile-chord-title {
+        font-size: 10px !important;
+        margin-bottom: 5px !important;
+      }
+    }
+
     @media (max-width: 620px) {
       body { padding: 8px; }
       .app { padding: 10px; border-radius: 20px; }
@@ -1320,7 +1395,7 @@
 
     <section class="guitar-shell">
       <div class="guitar-title">
-        <span>במובייל: אקורדים לרוחב מלא · פריטה לרוחב מלא</span>
+        <span>במובייל: פריטה 70% · אקורדים בצד ימין 30%</span>
         <span id="eventLabel">ממתין לטעינת MIDI…</span>
       </div>
 
@@ -1351,7 +1426,7 @@
       בשונה מהגרסאות הקודמות, המשחק הזה לא משתמש באקורדים כלליים שהמצאנו,
       אלא ממפה את תווי ה־MIDI של הגיטרה למיתרים ושריגים. כשהבועה יורדת,
       היא מראה איזה מיתרים ושריגים פעילים. במצב התחל שיר הבועה נעצרת על הקו עד שתפרוט נכון, ואז השיר ממשיך. אתה יכול לפרוט מיתר אחד, או להחליק על כמה מיתרים ברצף.
-      במובייל חילקתי את האזור לשניים: בחירת האקורדים ואזור הפריטה פתוחים לרוחב מלא במובייל. אם אתה רוצה אחר כך, אפשר לבנות גם גרסה עם עוד קבצי MIDI באותו סגנון.
+      במובייל חילקתי את האזור לשניים: במובייל: אזור הפריטה מקבל 70% מהרוחב, ובחירת האקורדים בצד ימין מקבלת 30%. אם אתה רוצה אחר כך, אפשר לבנות גם גרסה עם עוד קבצי MIDI באותו סגנון.
     </section>
   </main>
 
